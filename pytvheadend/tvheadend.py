@@ -259,7 +259,8 @@ class TVHeadend(object):
         try:
             with async_timeout.timeout(DEFAULT_TIMEOUT, loop=self._event_loop):
                 post = await self._api_session.post(
-                    url, params=params, data=data)
+                    url, params=params, data=data,
+                    auth=aiohttp.BasicAuth(self.usr, self.pwd))
             if post.status != 200:
                 _LOGGER.error('Error posting data: %s', post.status)
                 return None
@@ -286,7 +287,8 @@ class TVHeadend(object):
         try:
             with async_timeout.timeout(DEFAULT_TIMEOUT, loop=self._event_loop):
                 request = await self._api_session.get(
-                    url, headers=headers, params=params)
+                    url, headers=headers, params=params, 
+                    auth=aiohttp.BasicAuth(self.usr, self.pwd))
             # _LOGGER.debug('Get URL: %s', request.url)
             if request.status != 200:
                 _LOGGER.error('Error fetching data: %s', request.status)
